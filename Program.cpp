@@ -1,23 +1,20 @@
 #include <iostream>
 #include <ncurses.h>
 
+#include "Block.h"
+
 //Prototypes
 void GenerateMap();
 void PrintMap();
+void DeleteMap();
 void SetupColors();
 
 //Constants
 #define ROWS 21
 #define COLUMNS 80
 
-//Block or mob enum
-typedef enum {
-    dirt,
-    grass
-} block;
-
 //Global
-int map[ROWS][COLUMNS];
+Block* map[ROWS][COLUMNS];
 
 int main() {
     //Start ncurses
@@ -36,13 +33,14 @@ int main() {
     command = getch();
 
     endwin();
+    DeleteMap();
     return 0;
 }
 
 void GenerateMap() {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLUMNS; j++) {
-            map[i][j] = dirt;
+            map[i][j] = new Dirt();
         }
     }
 }
@@ -64,24 +62,20 @@ void PrintMap() {
             } else {
                 mvprintw(ROWS, j + 4, "%c", colStr[0]);
                 mvprintw(ROWS + 1, j + 4, "%c", colStr[1]);
-            }            
-            switch(map[i][j]) {
-                case dirt:
-                    attron(COLOR_PAIR(COLOR_YELLOW));
-                    mvprintw(i, j + 4, "#");
-                    attroff(COLOR_PAIR(COLOR_YELLOW));
-                    break;
-                case grass:
-                    attron(COLOR_PAIR(COLOR_GREEN));
-                    mvprintw(i, j + 4, "#");
-                    attroff(COLOR_PAIR(COLOR_GREEN));
-                    break;
-                default:
-                mvprintw(i, j + 4, " ");
-                    break;
             }
+            attron(COLOR_PAIR(map[i][j]->getColor()));
+            mvprintw(i, j + 4, "%c", map[i][j]->getIcon());
+            attroff(COLOR_PAIR(map[i][j]->getColor()));         
         }
     }
+}
+
+void DeleteMap() {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+            delete map[i][j]; 
+        }
+    }    
 }
 
 void SetupColors() {
