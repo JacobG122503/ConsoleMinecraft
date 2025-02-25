@@ -13,12 +13,12 @@ void SetupColors();
 #include <unistd.h>
 
 //Game settings
-#define ROWS 21
-#define COLUMNS 80
+int rows = 0;
+int columns = 0;
 int randomTickSpeed = 3; 
 
 //Global
-Block* map[ROWS][COLUMNS];
+Block*** map;
 
 int main() {
     srand(time(0));
@@ -30,6 +30,18 @@ int main() {
     curs_set(0);
     keypad(stdscr, TRUE);
     SetupColors();
+
+    //Get terminal size and set r and c respectively
+    //Also make room for other text
+    getmaxyx(stdscr, rows, columns); 
+    rows -= 6;
+    columns -= 35;
+
+    //Allocate the new map size
+    map = new Block**[rows];
+    for (int i = 0; i < rows; i++) {
+        map[i] = new Block*[columns];
+    }
     
     GenerateMap();
     PrintMap();
@@ -46,8 +58,8 @@ int main() {
             //Minecraft chooses 3 random blocks (randomTickSpeed) in the chunk and ticks them. 
             //A tick happens every .05 seconds. 
             for (int i = 0; i < randomTickSpeed; i++) {
-                Block* randomBlock = map[rand() % ROWS][rand() % COLUMNS];
-                randomBlock->Tick(map);
+                Block* randomBlock = map[rand() % rows][rand() % columns];
+                randomBlock->Tick(map, rows, columns);
             }
 
             PrintMap();
@@ -76,10 +88,10 @@ int main() {
                 if (x > -1 && y > -1) {  
                     refresh();
                     //Check out of bounds
-                    if (x >= 0 && x < ROWS && y >= 0 && y < COLUMNS) {
+                    if (x >= 0 && x < rows && y >= 0 && y < columns) {
                         delete map[x][y];
                         map[x][y] = new Grass(x, y);
-                        mvprintw(ROWS + 4, 0, "Placed Grass at %d %d", x, y);
+                        mvprintw(rows + 4, 0, "Placed Grass at %d %d", x, y);
                     }
                 }
                 waitingForInput = false;
@@ -99,10 +111,10 @@ int main() {
                 if (x > -1 && y > -1) {  
                     refresh();
                     //Check out of bounds
-                    if (x >= 0 && x < ROWS && y >= 0 && y < COLUMNS) {
+                    if (x >= 0 && x < rows && y >= 0 && y < columns) {
                         delete map[x][y];
                         map[x][y] = new Mycelium(x, y);
-                        mvprintw(ROWS + 4, 0, "Placed Mycelium at %d %d", x, y);
+                        mvprintw(rows + 4, 0, "Placed Mycelium at %d %d", x, y);
                     }
                 }
                 waitingForInput = false;
@@ -126,30 +138,30 @@ int main() {
 }
 
 void GenerateMap() {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
             map[i][j] = new Dirt(i, j);
         }
     }
 }
 
 void PrintMap() {
-    for (int i = 0; i < ROWS; i++) {
+    for (int i = 0; i < rows; i++) {
         //Print row numbers
         if (i < 10) {
             mvprintw(i, 2, "%d", i);
         } else {
             mvprintw(i, 1, "%d", i);
         }
-        for (int j = 0; j < COLUMNS; j++) {
+        for (int j = 0; j < columns; j++) {
             //Print column numbers
             std::string colStr = std::to_string(j);
             if (j < 10) {
-                mvprintw(ROWS, j + 4, " ");
-                mvprintw(ROWS + 1, j + 4, "%c", colStr[0]);
+                mvprintw(rows, j + 4, " ");
+                mvprintw(rows + 1, j + 4, "%c", colStr[0]);
             } else {
-                mvprintw(ROWS, j + 4, "%c", colStr[0]);
-                mvprintw(ROWS + 1, j + 4, "%c", colStr[1]);
+                mvprintw(rows, j + 4, "%c", colStr[0]);
+                mvprintw(rows + 1, j + 4, "%c", colStr[1]);
             }
             attron(COLOR_PAIR(map[i][j]->color));
             mvprintw(i, j + 4, "%c", map[i][j]->icon);
@@ -160,27 +172,27 @@ void PrintMap() {
 
 void PrintCommands() {
     //Print border
-    mvaddch(2, COLUMNS + 6, ACS_ULCORNER);
+    mvaddch(2, columns + 6, ACS_ULCORNER);
     //Horizontal is 1/2 a cell so double it 
     for (int i = 1; i <= 20; i++) {
-        mvaddch(2, COLUMNS + 6 + i, ACS_HLINE);
+        mvaddch(2, columns + 6 + i, ACS_HLINE);
     }
     //Vertical
     for (int i = 1; i <= 10; i++) {
-        mvaddch(2 + i, COLUMNS + 6, ACS_VLINE);
+        mvaddch(2 + i, columns + 6, ACS_VLINE);
     }
 
     //Print text
-    mvprintw(1, COLUMNS + 7, "COMMANDS");
-    mvprintw(3, COLUMNS + 7, "G - Place Grass");
-    mvprintw(4, COLUMNS + 7, "M - Place Mycelium");
-    mvprintw(5, COLUMNS + 7, "Up and Down - Change speed");
-    mvprintw(12, COLUMNS + 7, "Q - Quit");
+    mvprintw(1, columns + 7, "COMMANDS");
+    mvprintw(3, columns + 7, "G - Place Grass");
+    mvprintw(4, columns + 7, "M - Place Mycelium");
+    mvprintw(5, columns + 7, "Up and Down - Change speed");
+    mvprintw(12, columns + 7, "Q - Quit");
 }
 
 void DeleteMap() {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
             delete map[i][j]; 
         }
     }    

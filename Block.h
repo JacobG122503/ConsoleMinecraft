@@ -10,7 +10,7 @@ public:
     int color;
     int x, y;
 
-    virtual void Tick(Block* map[ROWS][COLUMNS]) = 0; //TEMP COLUMNS CHANGE LATER!!!!!!
+    virtual void Tick(Block*** map, int rows, int columns) = 0; 
 
     virtual ~Block() {} 
 
@@ -21,19 +21,19 @@ protected:
 class Grass : public Block {
 public:
     Grass(int x, int y) noexcept;
-    void Tick(Block* map[ROWS][COLUMNS]) override;
+    void Tick(Block*** map, int rows, int columns) override;
 };
 
 class Mycelium : public Block {
     public:
         Mycelium(int x, int y) noexcept;
-        void Tick(Block* map[ROWS][COLUMNS]) override;
+        void Tick(Block*** map, int rows, int columns) override;
     };   
 
 class Dirt : public Block {
 public:
     Dirt(int x, int y) noexcept;
-    void Tick(Block* map[ROWS][COLUMNS]) override;
+    void Tick(Block*** map, int rows, int columns) override;
 };
 
 #endif

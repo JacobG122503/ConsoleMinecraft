@@ -7,14 +7,14 @@ Grass::Grass(int x, int y) noexcept : Block(x, y) {
     color = COLOR_GREEN;
 }
 
-void Grass::Tick(Block* map[ROWS][COLUMNS]) {
+void Grass::Tick(Block*** map, int rows, int columns) {
     for (int attempts = 0; attempts < 10; attempts++) {
         //Generate -1 to 1 inclusive
         int newX = x + ((rand() % 3) - 1);
         int newY = y + ((rand() % 3) - 1);
     
         //Check if not out of bounds or not itself
-        if (((newX >= 0 && newX < ROWS) && (newY >= 0 && newY < COLUMNS))
+        if (((newX >= 0 && newX < rows) && (newY >= 0 && newY < columns))
                     && !(newX == x && newY == y)) {
             delete map[newX][newY];
             map[newX][newY] = new Grass(newX, newY);
@@ -30,14 +30,14 @@ Mycelium::Mycelium(int x, int y) noexcept : Block(x, y) {
     color = COLOR_MAGENTA;
 }
 
-void Mycelium::Tick(Block* map[ROWS][COLUMNS]) {
+void Mycelium::Tick(Block*** map, int rows, int columns) {
     for (int attempts = 0; attempts < 10; attempts++) {
         //Generate -1 to 1 inclusive
         int newX = x + ((rand() % 3) - 1);
         int newY = y + ((rand() % 3) - 1);
     
         //Check if not out of bounds or not itself
-        if (((newX >= 0 && newX < ROWS) && (newY >= 0 && newY < COLUMNS))
+        if (((newX >= 0 && newX < rows) && (newY >= 0 && newY < columns))
                     && !(newX == x && newY == y)) {
             delete map[newX][newY];
             map[newX][newY] = new Mycelium(newX, newY);
@@ -53,7 +53,7 @@ Dirt::Dirt(int x, int y) noexcept : Block(x, y) {
     color = COLOR_YELLOW;
 }
 
-void Dirt::Tick(Block* map[ROWS][COLUMNS]) {
+void Dirt::Tick(Block*** map, int rows, int columns) {
     //Ticking dirt does nothing
     return;
 }
