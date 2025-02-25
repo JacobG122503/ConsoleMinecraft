@@ -24,6 +24,12 @@ public:
     void Tick(Block* map[ROWS][COLUMNS]) override;
 };
 
+class Mycelium : public Block {
+    public:
+        Mycelium(int x, int y) noexcept;
+        void Tick(Block* map[ROWS][COLUMNS]) override;
+    };   
+
 class Dirt : public Block {
 public:
     Dirt(int x, int y) noexcept;

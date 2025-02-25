@@ -2,8 +2,9 @@
 
 ## Plans For Future
 - Get main interface completed
-- Add Grass and Mycelium 
+- (Done 2/25/25) Add Grass and Mycelium 
 - Add passive mobs (Sheep, Cow, Etc)
 - Add Builder NPC
 - Add stone
 - Add water
+- Add color war fun mode

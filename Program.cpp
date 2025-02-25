@@ -14,7 +14,7 @@ void SetupColors();
 //Constants
 #define ROWS 21
 #define COLUMNS 80
-#define randomTickSpeed 100 //Minecrafts tick speed is 3
+#define randomTickSpeed 300 //Minecrafts tick speed is 3
 
 //Global
 Block* map[ROWS][COLUMNS];
@@ -82,10 +82,28 @@ int main() {
                 }
                 waitingForInput = false;
             }
-            //Resume
-            else if (waitingForInput && command == 'R') {
+            // Place Mycelium Block
+            if (command == 'M') {
+                waitingForInput = true;
+                char input[100];
+
+                int x, y;
+                //Must turn blocking off in order to type the string
+                timeout(-1);
+                getstr(input);
+                timeout(0); 
+                sscanf(input, "%d %d", &x, &y);
+
+                if (x > -1 && y > -1) {  
+                    refresh();
+                    //Check out of bounds
+                    if (x >= 0 && x < ROWS && y >= 0 && y < COLUMNS) {
+                        delete map[x][y];
+                        map[x][y] = new Mycelium(x, y);
+                        mvprintw(ROWS + 4, 0, "Placed Mycelium at %d %d", x, y);
+                    }
+                }
                 waitingForInput = false;
-                refresh();
             }
             //Quit
             else if (command == 'Q') {
