@@ -6,15 +6,16 @@
 //Prototypes
 void GenerateMap();
 void PrintMap();
+void PrintCommands();
 void DeleteMap();
 void SetupColors();
 #include <cstdlib>
 #include <unistd.h>
 
-//Constants
+//Game settings
 #define ROWS 21
 #define COLUMNS 80
-#define randomTickSpeed 300 //Minecrafts tick speed is 3
+int randomTickSpeed = 3; 
 
 //Global
 Block* map[ROWS][COLUMNS];
@@ -32,11 +33,12 @@ int main() {
     
     GenerateMap();
     PrintMap();
+    PrintCommands();
     refresh();
 
     //Set up loop
     bool running = true;
-    char command;
+    int command;
     bool waitingForInput = false;
     
     while (running) {
@@ -83,7 +85,7 @@ int main() {
                 waitingForInput = false;
             }
             // Place Mycelium Block
-            if (command == 'M') {
+            else if (command == 'M') {
                 waitingForInput = true;
                 char input[100];
 
@@ -104,6 +106,12 @@ int main() {
                     }
                 }
                 waitingForInput = false;
+            }
+            else if (command == KEY_UP) {
+                randomTickSpeed *= 10;
+            }
+            else if (command == KEY_DOWN) {
+                if (randomTickSpeed != 3) randomTickSpeed /= 10;
             }
             //Quit
             else if (command == 'Q') {
@@ -148,6 +156,26 @@ void PrintMap() {
             attroff(COLOR_PAIR(map[i][j]->color));         
         }
     }
+}
+
+void PrintCommands() {
+    //Print border
+    mvaddch(2, COLUMNS + 6, ACS_ULCORNER);
+    //Horizontal is 1/2 a cell so double it 
+    for (int i = 1; i <= 20; i++) {
+        mvaddch(2, COLUMNS + 6 + i, ACS_HLINE);
+    }
+    //Vertical
+    for (int i = 1; i <= 10; i++) {
+        mvaddch(2 + i, COLUMNS + 6, ACS_VLINE);
+    }
+
+    //Print text
+    mvprintw(1, COLUMNS + 7, "COMMANDS");
+    mvprintw(3, COLUMNS + 7, "G - Place Grass");
+    mvprintw(4, COLUMNS + 7, "M - Place Mycelium");
+    mvprintw(5, COLUMNS + 7, "Up and Down - Change speed");
+    mvprintw(12, COLUMNS + 7, "Q - Quit");
 }
 
 void DeleteMap() {
