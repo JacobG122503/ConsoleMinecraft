@@ -8,15 +8,20 @@ void GenerateMap();
 void PrintMap();
 void DeleteMap();
 void SetupColors();
+#include <cstdlib>
+#include <unistd.h>
 
 //Constants
 #define ROWS 21
 #define COLUMNS 80
+#define randomTickSpeed 100 //Minecrafts tick speed is 3
 
 //Global
 Block* map[ROWS][COLUMNS];
 
 int main() {
+    srand(time(0));
+
     //Start ncurses
     initscr();
     raw(); 
@@ -29,8 +34,65 @@ int main() {
     PrintMap();
     refresh();
 
-    char command = 'c';
-    command = getch();
+    //Set up loop
+    bool running = true;
+    char command;
+    bool waitingForInput = false;
+    
+    while (running) {
+        if (!waitingForInput) {
+            //Minecraft chooses 3 random blocks (randomTickSpeed) in the chunk and ticks them. 
+            //A tick happens every .05 seconds. 
+            for (int i = 0; i < randomTickSpeed; i++) {
+                Block* randomBlock = map[rand() % ROWS][rand() % COLUMNS];
+                randomBlock->Tick(map);
+            }
+
+            PrintMap();
+            refresh();
+            //.05 seconds
+            usleep(50000);
+        }
+
+        //Player commands
+        timeout(0);
+        command = getch();
+        
+        if (command != ERR) {
+            // Place Grass Block
+            if (command == 'G') {
+                waitingForInput = true;
+                char input[100];
+
+                int x, y;
+                //Must turn blocking off in order to type the string
+                timeout(-1);
+                getstr(input);
+                timeout(0); 
+                sscanf(input, "%d %d", &x, &y);
+
+                if (x > -1 && y > -1) {  
+                    refresh();
+                    //Check out of bounds
+                    if (x >= 0 && x < ROWS && y >= 0 && y < COLUMNS) {
+                        delete map[x][y];
+                        map[x][y] = new Grass(x, y);
+                        mvprintw(ROWS + 4, 0, "Placed Grass at %d %d", x, y);
+                    }
+                }
+                waitingForInput = false;
+            }
+            //Resume
+            else if (waitingForInput && command == 'R') {
+                waitingForInput = false;
+                refresh();
+            }
+            //Quit
+            else if (command == 'Q') {
+                running = false;
+            }
+        }
+    }
 
     endwin();
     DeleteMap();
@@ -40,7 +102,7 @@ int main() {
 void GenerateMap() {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLUMNS; j++) {
-            map[i][j] = new Dirt();
+            map[i][j] = new Dirt(i, j);
         }
     }
 }
