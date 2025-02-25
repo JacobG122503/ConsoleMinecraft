@@ -63,9 +63,9 @@ void PrintMap() {
                 mvprintw(ROWS, j + 4, "%c", colStr[0]);
                 mvprintw(ROWS + 1, j + 4, "%c", colStr[1]);
             }
-            attron(COLOR_PAIR(map[i][j]->getColor()));
-            mvprintw(i, j + 4, "%c", map[i][j]->getIcon());
-            attroff(COLOR_PAIR(map[i][j]->getColor()));         
+            attron(COLOR_PAIR(map[i][j]->color));
+            mvprintw(i, j + 4, "%c", map[i][j]->icon);
+            attroff(COLOR_PAIR(map[i][j]->color));         
         }
     }
 }

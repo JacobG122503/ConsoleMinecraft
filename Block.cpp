@@ -2,22 +2,12 @@
 #include "Block.h"
 
 
-Grass::Grass() noexcept {}
-
-char Grass::getIcon() const {
-    return '#';
+Grass::Grass() noexcept {
+    icon = '#';
+    color = COLOR_GREEN;
 }
 
-int Grass::getColor() const {
-    return COLOR_GREEN;
-}
-
-Dirt::Dirt() noexcept {}
-
-char Dirt::getIcon() const {
-    return '#';
-}
-
-int Dirt::getColor() const {
-    return COLOR_YELLOW;
+Dirt::Dirt() noexcept {
+    icon = '#';
+    color = COLOR_YELLOW;
 }
