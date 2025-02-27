@@ -29,11 +29,19 @@ int main() {
     noecho();
     curs_set(0);
     keypad(stdscr, TRUE);
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+    MEVENT event;
     SetupColors();
 
     //Get terminal size and set r and c respectively
     //Also make room for other text
     getmaxyx(stdscr, rows, columns); 
+    if (rows < 21 || columns < 80) {
+        endwin();
+        std::cout << "\033[2J\033[H";
+        std::cout << "Please set your terminal size to be bigger than 21x80." << std::endl;
+        return 0;
+    }
     rows -= 6;
     columns -= 35;
 
@@ -76,14 +84,16 @@ int main() {
             // Place Grass Block
             if (command == 'G') {
                 waitingForInput = true;
-                char input[100];
 
                 int x, y;
                 //Must turn blocking off in order to type the string
                 timeout(-1);
-                getstr(input);
+                command = getch();
+                if (command == KEY_MOUSE && getmouse(&event) == OK) {
+                    x = event.y;
+                    y = event.x - 4;
+                }
                 timeout(0); 
-                sscanf(input, "%d %d", &x, &y);
 
                 if (x > -1 && y > -1) {  
                     refresh();
@@ -189,6 +199,8 @@ void PrintCommands() {
     mvprintw(5, columns + 7, "Up and Down - Change speed");
     mvprintw(12, columns + 7, "Q - Quit");
 }
+
+//TODO add a function that clears the status/info line
 
 void DeleteMap() {
     for (int i = 0; i < rows; i++) {

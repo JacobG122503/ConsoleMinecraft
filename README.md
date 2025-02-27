@@ -8,3 +8,4 @@
 - Add stone
 - Add water
 - Add color war fun mode
+- Add Farmer NPC
