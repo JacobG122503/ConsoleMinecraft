@@ -86,7 +86,7 @@ int main() {
                 waitingForInput = true;
 
                 int x, y;
-                //Must turn blocking off in order to type the string
+                //Must turn blocking off in order to read the click area
                 timeout(-1);
                 command = getch();
                 if (command == KEY_MOUSE && getmouse(&event) == OK) {
@@ -112,11 +112,14 @@ int main() {
                 char input[100];
 
                 int x, y;
-                //Must turn blocking off in order to type the string
+                //Must turn blocking off
                 timeout(-1);
-                getstr(input);
+                command = getch();
+                if (command == KEY_MOUSE && getmouse(&event) == OK) {
+                    x = event.y;
+                    y = event.x - 4;
+                }
                 timeout(0); 
-                sscanf(input, "%d %d", &x, &y);
 
                 if (x > -1 && y > -1) {  
                     refresh();
