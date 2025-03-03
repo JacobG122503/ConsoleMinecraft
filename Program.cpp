@@ -1,5 +1,9 @@
 #include <iostream>
 #include <ncurses.h>
+#include <fstream>
+#include <ctime>
+#include <cstdlib>
+#include <unistd.h>
 
 #include "Block.h"
 
@@ -9,8 +13,7 @@ void PrintMap();
 void PrintCommands();
 void DeleteMap();
 void SetupColors();
-#include <cstdlib>
-#include <unistd.h>
+void Log(const std::string& );
 
 //Game settings
 int rows = 0;
@@ -32,6 +35,9 @@ int main() {
     mousemask(ALL_MOUSE_EVENTS, NULL);
     MEVENT event;
     SetupColors();
+
+    //Clear log file
+    std::ofstream file("logs.txt", std::ios::trunc);
 
     //Get terminal size and set r and c respectively
     //Also make room for other text
@@ -61,6 +67,8 @@ int main() {
     int command;
     bool waitingForInput = false;
     
+    Log("Program started.");
+
     while (running) {
         if (!waitingForInput) {
             //Minecraft chooses 3 random blocks (randomTickSpeed) in the chunk and ticks them. 
@@ -222,4 +230,15 @@ void SetupColors() {
     init_pair(COLOR_CYAN, COLOR_CYAN, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
     init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
+}
+
+//Simple function to write to log file
+void Log(const std::string& message) {
+    std::ofstream file("logs.txt", std::ios::app);
+    if (!file.is_open()) return;
+
+    std::time_t now = std::time(nullptr);
+    std::tm* localTime = std::localtime(&now);
+
+    file << std::put_time(localTime, "[%Y-%m-%d %H:%M:%S] ") << message << std::endl;
 }

@@ -2,7 +2,7 @@ Program: Program.o Block.o
 	g++ -std=c++11 -g Program.o Block.o -o Program -lncurses
 
 clean:
-	rm -f Program *~ core *.o
+	rm -f Program logs.txt *~ core *.o
 
 brun: Program.o Block.o
 	g++ -std=c++11 -g Program.o Block.o -o Program -lncurses
