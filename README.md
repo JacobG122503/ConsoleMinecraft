@@ -1,7 +1,6 @@
 # Console Minecraft
 
 ## Plans For Future
-- Get main interface completed
 - Add passive mobs (Sheep, Cow, Etc)
 - Add Builder NPC
 - Add stone
@@ -11,3 +10,4 @@
 - Add wheat field placeable. 
 - (Done 02/25/25) Add Grass and Mycelium 
 - (Done 03/04/25) Add a logging system, log everything and put in textfile
+- (Done 03/04/25) Get main interface completed

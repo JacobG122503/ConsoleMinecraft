@@ -12,8 +12,13 @@
 void GenerateMap();
 void PrintMap();
 void PrintCommands();
+void ClearStatusLine();
 void DeleteMap();
 void SetupColors();
+
+//Constants
+#define ROW_OFFSET 6
+#define COLUMN_OFFSET 35
 
 //Game settings
 int rows = 0;
@@ -49,8 +54,8 @@ int main() {
         std::cout << "Please set your terminal size to be bigger than 21x80." << std::endl;
         return 0;
     }
-    rows -= 6;
-    columns -= 35;
+    rows -= ROW_OFFSET;
+    columns -= COLUMN_OFFSET;
 
     //Allocate the new map size
     map = new Block**[rows];
@@ -90,6 +95,7 @@ int main() {
         command = getch();
         
         if (command != ERR) {
+            ClearStatusLine();
             // Place Grass Block
             if (command == 'G') {
                 waitingForInput = true;
@@ -110,6 +116,7 @@ int main() {
                     if (x >= 0 && x < rows && y >= 0 && y < columns) {
                         delete map[x][y];
                         map[x][y] = new Grass(x, y);
+                        ClearStatusLine();
                         mvprintw(rows + 4, 0, "Placed Grass at %d, %d", x, y);
                         Log("Placed Grass at %d, %d", x, y);
                     }
@@ -137,6 +144,7 @@ int main() {
                     if (x >= 0 && x < rows && y >= 0 && y < columns) {
                         delete map[x][y];
                         map[x][y] = new Mycelium(x, y);
+                        ClearStatusLine();
                         mvprintw(rows + 4, 0, "Placed Mycelium at %d, %d", x, y);
                         Log("Placed Mycelium at %d, %d", x, y);
                     }
@@ -218,6 +226,12 @@ void PrintCommands() {
 }
 
 //TODO add a function that clears the status/info line
+void ClearStatusLine() {
+    //rows + 4, 0
+    for (int i = 0; i < columns + COLUMN_OFFSET; i++) {
+        mvprintw(rows + 4, i, " "); 
+    }
+}
 
 void DeleteMap() {
     for (int i = 0; i < rows; i++) {
