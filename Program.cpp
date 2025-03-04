@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "Block.h"
+#include "Logger.h"
 
 //Prototypes
 void GenerateMap();
@@ -13,7 +14,6 @@ void PrintMap();
 void PrintCommands();
 void DeleteMap();
 void SetupColors();
-void Log(const std::string& );
 
 //Game settings
 int rows = 0;
@@ -24,7 +24,8 @@ int randomTickSpeed = 3;
 Block*** map;
 
 int main() {
-    srand(time(0));
+    int seed = time(0);
+    srand(seed);
 
     //Start ncurses
     initscr();
@@ -67,7 +68,7 @@ int main() {
     int command;
     bool waitingForInput = false;
     
-    Log("Program started.");
+    Log("Program started with seed: %d", seed);
 
     while (running) {
         if (!waitingForInput) {
@@ -109,7 +110,8 @@ int main() {
                     if (x >= 0 && x < rows && y >= 0 && y < columns) {
                         delete map[x][y];
                         map[x][y] = new Grass(x, y);
-                        mvprintw(rows + 4, 0, "Placed Grass at %d %d", x, y);
+                        mvprintw(rows + 4, 0, "Placed Grass at %d, %d", x, y);
+                        Log("Placed Grass at %d, %d", x, y);
                     }
                 }
                 waitingForInput = false;
@@ -135,20 +137,24 @@ int main() {
                     if (x >= 0 && x < rows && y >= 0 && y < columns) {
                         delete map[x][y];
                         map[x][y] = new Mycelium(x, y);
-                        mvprintw(rows + 4, 0, "Placed Mycelium at %d %d", x, y);
+                        mvprintw(rows + 4, 0, "Placed Mycelium at %d, %d", x, y);
+                        Log("Placed Mycelium at %d, %d", x, y);
                     }
                 }
                 waitingForInput = false;
             }
             else if (command == KEY_UP) {
                 randomTickSpeed *= 10;
+                Log("Speed increased to %d", randomTickSpeed);
             }
             else if (command == KEY_DOWN) {
                 if (randomTickSpeed != 3) randomTickSpeed /= 10;
+                Log("Speed decreased to %d", randomTickSpeed);
             }
             //Quit
             else if (command == 'Q') {
                 running = false;
+                Log("Quitting...");
             }
         }
     }
@@ -230,15 +236,4 @@ void SetupColors() {
     init_pair(COLOR_CYAN, COLOR_CYAN, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
     init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
-}
-
-//Simple function to write to log file
-void Log(const std::string& message) {
-    std::ofstream file("logs.txt", std::ios::app);
-    if (!file.is_open()) return;
-
-    std::time_t now = std::time(nullptr);
-    std::tm* localTime = std::localtime(&now);
-
-    file << std::put_time(localTime, "[%Y-%m-%d %H:%M:%S] ") << message << std::endl;
 }

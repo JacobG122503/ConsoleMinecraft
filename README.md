@@ -2,12 +2,12 @@
 
 ## Plans For Future
 - Get main interface completed
-- (Done 2/25/25) Add Grass and Mycelium 
 - Add passive mobs (Sheep, Cow, Etc)
 - Add Builder NPC
 - Add stone
 - Add water
 - Add color war fun mode
 - Add Farmer NPC
-- Add a logging system, log everything and put in textfile
 - Add wheat field placeable. 
+- (Done 02/25/25) Add Grass and Mycelium 
+- (Done 03/04/25) Add a logging system, log everything and put in textfile

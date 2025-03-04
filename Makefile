@@ -8,10 +8,10 @@ brun: Program.o Block.o
 	g++ -std=c++11 -g Program.o Block.o -o Program -lncurses
 	./Program
 
-Program.o: Program.cpp Block.h
+Program.o: Program.cpp Block.h Logger.h
 	g++ -std=c++11 -g -c Program.cpp
 
-Block.o: Block.cpp Block.h
+Block.o: Block.cpp Block.h Logger.h
 	g++ -std=c++11 -g -c Block.cpp
 # Program: Program.o heap.o Pokedex.o
 # 	g++ Program.o heap.o Pokedex.o -o Program -lncurses
