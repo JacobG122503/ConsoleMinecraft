@@ -126,7 +126,6 @@ int main() {
             // Place Mycelium Block
             else if (command == 'M') {
                 waitingForInput = true;
-                char input[100];
 
                 int x, y;
                 //Must turn blocking off
@@ -147,6 +146,42 @@ int main() {
                         ClearStatusLine();
                         mvprintw(rows + 4, 0, "Placed Mycelium at %d, %d", x, y);
                         Log("Placed Mycelium at %d, %d", x, y);
+                    }
+                }
+                waitingForInput = false;
+            }
+            // Place Wheat Field
+            else if (command == 'W') {
+                waitingForInput = true;
+
+                int x1, y1;
+                int x2, y2;
+
+                timeout(-1);
+                //Get both corners
+                command = getch();
+                if (command == KEY_MOUSE && getmouse(&event) == OK) {
+                    x1 = event.y;
+                    y1 = event.x - 4;
+                }
+                command = getch();
+                if (command == KEY_MOUSE && getmouse(&event) == OK) {
+                    x2 = event.y;
+                    y2 = event.x - 4;
+                }
+                timeout(0); 
+
+                if ((x1 > -1 && y1 > -1) && (x2 > -1 && y2 > -1)) {  
+                    refresh();
+                    //Check out of bounds
+                    if ((x1 >= 0 && x1 < rows && y1 >= 0 && y1 < columns) && (x2 >= 0 && x2 < rows && y2 >= 0 && y2 < columns)) {
+
+                        for (int i = x1; i < x2; i++) {
+                            for (int j = y1; j < y2; j++) {
+                                delete map[i][j];
+                                map[i][j] = new Wheat(i, j);
+                            }
+                        }
                     }
                 }
                 waitingForInput = false;
@@ -245,6 +280,9 @@ enum CustomColors {
     COLOR_DIRT = 100, 
     COLOR_GRASS,
     COLOR_MYCELIUM,
+    COLOR_GREEN_WHEAT,
+    COLOR_YELLOW_WHEAT,
+    COLOR_SOIL,
 };
 
 //RGB * 1000 / 255
@@ -264,4 +302,8 @@ void SetupColors() {
     init_pair(COLOR_GRASS, COLOR_GRASS, COLOR_GRASS); 
     init_color(COLOR_MYCELIUM, 412, 380, 439);
     init_pair(COLOR_MYCELIUM, COLOR_MYCELIUM, COLOR_MYCELIUM); 
+    //139,69,19)4
+    init_color(COLOR_SOIL, 329, 176, 110);
+    init_pair(COLOR_GREEN_WHEAT, COLOR_GREEN, COLOR_SOIL);
+    init_pair(COLOR_YELLOW_WHEAT, COLOR_YELLOW, COLOR_SOIL);
 }

@@ -8,6 +8,8 @@ enum CustomColors {
     COLOR_DIRT = 100, 
     COLOR_GRASS,
     COLOR_MYCELIUM,
+    COLOR_GREEN_WHEAT,
+    COLOR_YELLOW_WHEAT,
 };
 
 
@@ -76,13 +78,16 @@ void Dirt::Tick(Block*** map, int rows, int columns) {
 }
 
 Wheat::Wheat(int x, int y) noexcept : Block(x, y) {
-    color = COLOR_GREEN;
+    color = COLOR_GREEN_WHEAT;
     stage = 0;
     icon = '.';
 }
 
 //All wheat logic is assuming dry farmland.
 void Wheat::Tick(Block*** map, int rows, int columns) {
+    //Already full grown. Skip
+    if (stage == 7) return;
+
     float points = 2.0f;
     bool halfProb = false;
     bool halfPoints = false;
@@ -93,8 +98,11 @@ void Wheat::Tick(Block*** map, int rows, int columns) {
     //Add .25 points for each wheat in surrounding area
     //If there is a diagonal wheat, half the probability at the end
     //If not in rows, half the points
-    for (int newX = -1; newX <= 1; newX++) {
-        for (int newY = -1; newY <= 1; newY++) {
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            int newX = x + i;
+            int newY = y + j;
+
             //If itself, continue or if out of bounds. 
             if (newX == 0 && newY == 0 || newX < 0 || newX >= rows || newY < 0 || newY >= columns) continue;
 
@@ -106,16 +114,16 @@ void Wheat::Tick(Block*** map, int rows, int columns) {
             }
 
             //If has diagonal
-            if (newX + newY == 0 || abs(newX + newY) == 2) {
+            if (i + j == 0 || abs(i + j) == 2) {
                 halfProb = true;
                 halfPoints = true;
             }
 
             //If has block going North, etc.
-            if (newX == 0 && newY == 1) north = true;
-            if (newX == 0 && newY == -1) south = true;
-            if (newX == 1 && newY == 0) east = true;
-            if (newX == -1 && newY == 0) west = true;
+            if (i == 0 && j == 1) north = true;
+            if (i == 0 && j == -1) south = true;
+            if (i == 1 && j == 0) east = true;
+            if (i == -1 && j == 0) west = true;
 
             //Now check if in rows or not.
             if (north && east) halfPoints = true;
@@ -125,43 +133,46 @@ void Wheat::Tick(Block*** map, int rows, int columns) {
         }
     }
     
-    if (halfPoints) points /= 2;
+    if (halfPoints) points /= 2.0f;
+    Log("Wheat %d, %d has points:  %f", x, y, points);
+    //This probability is taken from Minecraft logic
     float probability = 1.0f / (floor(25.0f / points) + 1);
     if (halfProb) probability /= 2;
+    Log("Wheat %d, %d has probability to grow of %f", x, y, probability);
 
     if ((rand() % 100) < (probability * 100)) {
         //Grow to next stage
-        if (stage < 8) {
+        if (stage < 7) {
             stage++;
 
             switch (stage) {
                 case 0:
-                    icon = '0';
+                    icon = '.';
                     break;
                 case 1:
-                    icon = '1';
+                    icon = ',';
                     break;
                 case 2:
-                    icon = '2';
+                    icon = '_';
                     break;
                 case 3:
-                    icon = '3';
+                    icon = '=';
                     break;
                 case 4:
-                    icon = '4';
+                    icon = 'u';
                     break;
                 case 5:
-                    icon = '5';
+                    icon = 'w';
                     break;
                 case 6:
-                    icon = '6';
+                    icon = 'W';
                     break;
                 case 7:
-                    icon = '7';
+                    icon = 'W';
+                    color = COLOR_YELLOW_WHEAT;
                     break;
                 default:
-                    icon = '8';
-                    color = COLOR_GREEN;
+                    icon = 'e';
                     break;
             }
         }
