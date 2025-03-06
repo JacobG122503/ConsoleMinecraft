@@ -36,4 +36,11 @@ public:
     void Tick(Block*** map, int rows, int columns) override;
 };
 
+class Wheat : public Block {
+    public:
+        int stage;
+        Wheat(int x, int y) noexcept;
+        void Tick(Block*** map, int rows, int columns) override;
+    };
+
 #endif
