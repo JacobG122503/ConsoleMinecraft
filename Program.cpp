@@ -225,7 +225,6 @@ void PrintCommands() {
     mvprintw(12, columns + 7, "Q - Quit");
 }
 
-//TODO add a function that clears the status/info line
 void ClearStatusLine() {
     //rows + 4, 0
     for (int i = 0; i < columns + COLUMN_OFFSET; i++) {
@@ -241,6 +240,14 @@ void DeleteMap() {
     }    
 }
 
+//Actual minecraft colors
+enum CustomColors {
+    COLOR_DIRT = 100, 
+    COLOR_GRASS,
+    COLOR_MYCELIUM,
+};
+
+//RGB * 1000 / 255
 void SetupColors() {
     start_color();
     init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
@@ -250,4 +257,11 @@ void SetupColors() {
     init_pair(COLOR_CYAN, COLOR_CYAN, COLOR_BLACK);
     init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
     init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
+    //Custom Colors
+    init_color(COLOR_DIRT, 573, 424, 302); 
+    init_pair(COLOR_DIRT, COLOR_DIRT, COLOR_DIRT); 
+    init_color(COLOR_GRASS, 388, 498, 251); 
+    init_pair(COLOR_GRASS, COLOR_GRASS, COLOR_GRASS); 
+    init_color(COLOR_MYCELIUM, 412, 380, 439);
+    init_pair(COLOR_MYCELIUM, COLOR_MYCELIUM, COLOR_MYCELIUM); 
 }

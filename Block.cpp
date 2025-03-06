@@ -4,10 +4,16 @@
 #include "Block.h"
 #include "Logger.h"
 
+enum CustomColors {
+    COLOR_DIRT = 100, 
+    COLOR_GRASS,
+    COLOR_MYCELIUM,
+};
+
 
 Grass::Grass(int x, int y) noexcept : Block(x, y) {
     icon = '#';
-    color = COLOR_GREEN;
+    color = COLOR_GRASS;
 }
 
 void Grass::Tick(Block*** map, int rows, int columns) {
@@ -37,7 +43,7 @@ if (dynamic_cast<Grass*>(map[x][y]) != nullptr) {
 
 Mycelium::Mycelium(int x, int y) noexcept : Block(x, y) {
     icon = '#';
-    color = COLOR_MAGENTA;
+    color = COLOR_MYCELIUM;
 }
 
 void Mycelium::Tick(Block*** map, int rows, int columns) {
@@ -61,7 +67,7 @@ void Mycelium::Tick(Block*** map, int rows, int columns) {
 
 Dirt::Dirt(int x, int y) noexcept : Block(x, y) {
     icon = '#';
-    color = COLOR_YELLOW;
+    color = COLOR_DIRT;
 }
 
 void Dirt::Tick(Block*** map, int rows, int columns) {
