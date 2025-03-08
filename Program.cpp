@@ -9,6 +9,7 @@
 #include "Logger.h"
 
 //Prototypes
+void UpdateTime(int );
 void GenerateMap();
 void PrintMap();
 void PrintCommands();
@@ -75,6 +76,8 @@ int main() {
     
     Log("Program started with seed: %d", seed);
 
+    int ticks = 0;
+
     while (running) {
         if (!waitingForInput) {
             //Minecraft chooses 3 random blocks (randomTickSpeed) in the chunk and ticks them. 
@@ -82,6 +85,7 @@ int main() {
             for (int i = 0; i < randomTickSpeed; i++) {
                 Block* randomBlock = map[rand() % rows][rand() % columns];
                 randomBlock->Tick(map, rows, columns);
+                UpdateTime(++ticks/3);
             }
 
             PrintMap();
@@ -207,6 +211,16 @@ int main() {
     return 0;
 }
 
+void UpdateTime(int ticks) {
+    int totalMinutes = ticks / 1200; 
+    int hours = totalMinutes / 60;
+    int minutes = totalMinutes % 60;
+
+    mvprintw(15, columns + 7, "Time Elapsed: %02dh %02dm", hours, minutes);
+}
+
+
+
 void GenerateMap() {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
@@ -256,7 +270,8 @@ void PrintCommands() {
     mvprintw(1, columns + 7, "COMMANDS");
     mvprintw(3, columns + 7, "G - Place Grass");
     mvprintw(4, columns + 7, "M - Place Mycelium");
-    mvprintw(5, columns + 7, "Up and Down - Change speed");
+    mvprintw(5, columns + 7, "W - Place Wheat");
+    mvprintw(6, columns + 7, "Up and Down - Change speed");
     mvprintw(12, columns + 7, "Q - Quit");
 }
 
@@ -302,7 +317,6 @@ void SetupColors() {
     init_pair(COLOR_GRASS, COLOR_GRASS, COLOR_GRASS); 
     init_color(COLOR_MYCELIUM, 412, 380, 439);
     init_pair(COLOR_MYCELIUM, COLOR_MYCELIUM, COLOR_MYCELIUM); 
-    //139,69,19)4
     init_color(COLOR_SOIL, 329, 176, 110);
     init_pair(COLOR_GREEN_WHEAT, COLOR_GREEN, COLOR_SOIL);
     init_pair(COLOR_YELLOW_WHEAT, COLOR_YELLOW, COLOR_SOIL);

@@ -7,7 +7,7 @@
 #include <cstdarg>
 
 //Turn logging off, set it to false.
-#define ENABLE_LOGGING true
+#define ENABLE_LOGGING false
 
 inline void Log(const char* format, ...) {
     if (!ENABLE_LOGGING) return;
