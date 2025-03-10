@@ -25,6 +25,7 @@ void SetupColors();
 int rows = 0;
 int columns = 0;
 int randomTickSpeed = 3; 
+int speed = 1;
 
 //Global
 Block*** map;
@@ -193,10 +194,14 @@ int main() {
             else if (command == KEY_UP) {
                 randomTickSpeed *= 10;
                 Log("Speed increased to %d", randomTickSpeed);
+                mvprintw(rows + 4, 0, "Speed set to level %d", ++speed);
             }
             else if (command == KEY_DOWN) {
-                if (randomTickSpeed != 3) randomTickSpeed /= 10;
-                Log("Speed decreased to %d", randomTickSpeed);
+                if (randomTickSpeed != 3) {
+                    randomTickSpeed /= 10;
+                    mvprintw(rows + 4, 0, "Speed set to level %d", --speed);
+                    Log("Speed decreased to %d", randomTickSpeed);
+                }
             }
             //Quit
             else if (command == 'Q') {
@@ -213,10 +218,13 @@ int main() {
 
 void UpdateTime(int ticks) {
     int totalMinutes = ticks / 1200; 
-    int hours = totalMinutes / 60;
+    int totalHours = totalMinutes / 60;
     int minutes = totalMinutes % 60;
+    int hours = totalHours % 24;
+    int totalDays = totalHours / 24;
 
-    mvprintw(15, columns + 7, "Time Elapsed: %02dh %02dm", hours, minutes);
+   mvprintw(15, columns + 7, "Time Elapsed: %02dh %02dm", hours, minutes);
+   mvprintw(16, columns + 7, "Day: %d", totalDays);
 }
 
 
@@ -271,7 +279,7 @@ void PrintCommands() {
     mvprintw(3, columns + 7, "G - Place Grass");
     mvprintw(4, columns + 7, "M - Place Mycelium");
     mvprintw(5, columns + 7, "W - Place Wheat");
-    mvprintw(6, columns + 7, "Up and Down - Change speed");
+    mvprintw(6, columns + 7, "Up/Down - Change speed ");
     mvprintw(12, columns + 7, "Q - Quit");
 }
 
