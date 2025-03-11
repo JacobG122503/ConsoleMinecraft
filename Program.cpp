@@ -223,8 +223,42 @@ void UpdateTime(int ticks) {
     int hours = totalHours % 24;
     int totalDays = totalHours / 24;
 
-   mvprintw(15, columns + 7, "Time Elapsed: %02dh %02dm", hours, minutes);
-   mvprintw(16, columns + 7, "Day: %d", totalDays);
+    //Daylight cycle function
+    //Find if Sun or Moon and its position
+    int sunPos = hours % 24;  
+    int moonPos = (sunPos + 12) % 24;
+
+    //Print the sun/moon
+    for (int i = 0; i <= 24; i++) {
+        //This was my way of expanding the print of the cycle to be wider
+        //It works I just feel like there is definitely a better way to do this...
+        if (i % 2 == 1) continue;
+        int i2 = i/2;
+
+        int pos;
+        if (i2 > 6) {
+            pos = 6 - (i2 - 6);
+        } else {
+            pos = i2;
+        }
+
+        if (i2 == sunPos) {
+            attron(COLOR_PAIR(COLOR_YELLOW));
+            mvprintw(20 - pos, (columns + 7) + i, " ");
+            attroff(COLOR_PAIR(COLOR_YELLOW));
+            continue;
+        }
+        if (i2 == moonPos) {
+            attron(COLOR_PAIR(COLOR_BLUE));
+            mvprintw(20 - pos, (columns + 7) + i, " ");
+            attroff(COLOR_PAIR(COLOR_BLUE));
+            continue;
+        }
+
+        mvprintw(20 - pos, (columns + 7) + i, ".");
+    }
+
+    mvprintw(22, columns + 7, "Day: %d", totalDays);
 }
 
 
@@ -313,10 +347,10 @@ void SetupColors() {
     start_color();
     init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
     init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
-    init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_YELLOW);
     init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(COLOR_CYAN, COLOR_CYAN, COLOR_BLACK);
-    init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
+    init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLUE);
     init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
     //Custom Colors
     init_color(COLOR_DIRT, 573, 424, 302); 
