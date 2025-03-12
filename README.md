@@ -13,3 +13,9 @@
 - (Done 03/04/25) Get main interface completed
 - (Done 03/08/25) Add time elapsed
 - (Done 03/11/25) Improve time elapsed
+
+## Things to do before 1.0.0
+- Stop grass/mycelium spreading on anything besides dirt
+- Fix wheat spawn
+- Remove numbers on borders
+- Complete Readme Documentation

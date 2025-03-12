@@ -155,7 +155,7 @@ int main() {
                 }
                 waitingForInput = false;
             }
-            // Place Wheat Field
+            //Place Wheat Field
             else if (command == 'W') {
                 waitingForInput = true;
 
@@ -217,9 +217,12 @@ int main() {
 }
 
 void UpdateTime(int ticks) {
-    int totalMinutes = ticks / 1200; 
-    int totalHours = totalMinutes / 60;
-    int minutes = totalMinutes % 60;
+    //A day is 24,000 ticks.
+    //1 hour in minecraft is 1000 ticks. 
+    //So 1 minute is 16.67 ticks
+    //int totalMinutes = ticks / (1000/16) /// 1200; 
+    int totalHours = ticks/1000;
+    //int minutes = totalMinutes % 60;
     int hours = totalHours % 24;
     int totalDays = totalHours / 24;
 
