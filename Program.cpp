@@ -273,22 +273,7 @@ void GenerateMap() {
 
 void PrintMap() {
     for (int i = 0; i < rows; i++) {
-        //Print row numbers
-        if (i < 10) {
-            mvprintw(i, 2, "%d", i);
-        } else {
-            mvprintw(i, 1, "%d", i);
-        }
         for (int j = 0; j < columns; j++) {
-            //Print column numbers
-            std::string colStr = std::to_string(j);
-            if (j < 10) {
-                mvprintw(rows, j + 4, " ");
-                mvprintw(rows + 1, j + 4, "%c", colStr[0]);
-            } else {
-                mvprintw(rows, j + 4, "%c", colStr[0]);
-                mvprintw(rows + 1, j + 4, "%c", colStr[1]);
-            }
             attron(COLOR_PAIR(map[i][j]->color));
             mvprintw(i, j + 4, "%c", map[i][j]->icon);
             attroff(COLOR_PAIR(map[i][j]->color));         

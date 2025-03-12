@@ -15,6 +15,4 @@
 - (Done 03/11/25) Improve time elapsed
 
 ## Things to do before 1.0.0
-- Stop grass/mycelium spreading on anything besides dirt
-- Remove numbers on borders
 - Complete Readme Documentation

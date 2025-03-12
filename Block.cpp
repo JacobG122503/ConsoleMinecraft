@@ -25,8 +25,10 @@ void Grass::Tick(Block*** map, int rows, int columns) {
         int newY = y + ((rand() % 3) - 1);
     
         //Check if not out of bounds or not itself or not grass already.
+        //And is dirt (Can only spread to dirt)
         if (((newX >= 0 && newX < rows) && (newY >= 0 && newY < columns))
-                    && !(newX == x && newY == y) && dynamic_cast<Grass*>(map[newX][newY]) == nullptr) {
+                    && !(newX == x && newY == y) && dynamic_cast<Grass*>(map[newX][newY]) == nullptr
+                    && dynamic_cast<Dirt*>(map[newX][newY]) != nullptr) {
             delete map[newX][newY];
             map[newX][newY] = new Grass(newX, newY);
             Log("Grass (%d, %d) spread to %d, %d", x, y, newX, newY);
@@ -55,8 +57,10 @@ void Mycelium::Tick(Block*** map, int rows, int columns) {
         int newY = y + ((rand() % 3) - 1);
     
         //Check if not out of bounds or not itself also not already Mycelium
+        //And is dirt (Can only spread to dirt)
         if (((newX >= 0 && newX < rows) && (newY >= 0 && newY < columns))
-                    && !(newX == x && newY == y) && dynamic_cast<Mycelium*>(map[newX][newY]) == nullptr) {
+                    && !(newX == x && newY == y) && dynamic_cast<Mycelium*>(map[newX][newY]) == nullptr
+                    && dynamic_cast<Dirt*>(map[newX][newY]) != nullptr) {
             delete map[newX][newY];
             map[newX][newY] = new Mycelium(newX, newY);
             Log("Mycelium (%d, %d) spread to %d, %d", x, y, newX, newY);
