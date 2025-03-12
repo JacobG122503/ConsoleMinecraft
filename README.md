@@ -16,6 +16,5 @@
 
 ## Things to do before 1.0.0
 - Stop grass/mycelium spreading on anything besides dirt
-- Fix wheat spawn
 - Remove numbers on borders
 - Complete Readme Documentation

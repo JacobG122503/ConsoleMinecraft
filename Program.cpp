@@ -181,8 +181,8 @@ int main() {
                     //Check out of bounds
                     if ((x1 >= 0 && x1 < rows && y1 >= 0 && y1 < columns) && (x2 >= 0 && x2 < rows && y2 >= 0 && y2 < columns)) {
 
-                        for (int i = x1; i < x2; i++) {
-                            for (int j = y1; j < y2; j++) {
+                        for (int i = x1; i <= x2; i++) {
+                            for (int j = y1; j <= y2; j++) {
                                 delete map[i][j];
                                 map[i][j] = new Wheat(i, j);
                             }
@@ -219,10 +219,7 @@ int main() {
 void UpdateTime(int ticks) {
     //A day is 24,000 ticks.
     //1 hour in minecraft is 1000 ticks. 
-    //So 1 minute is 16.67 ticks
-    //int totalMinutes = ticks / (1000/16) /// 1200; 
     int totalHours = ticks/1000;
-    //int minutes = totalMinutes % 60;
     int hours = totalHours % 24;
     int totalDays = totalHours / 24;
 
