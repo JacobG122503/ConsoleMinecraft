@@ -12,10 +12,11 @@ Below are the current commands you can do in the app:
 - G - Place Grass: Click anywhere to place the one grass block. If the grass is ticked, it will spread to a nearby dirt block if applicable.
 - M - Place Mycelium: Same logic as grass. 
 - W - Place Wheat: This will place a whole wheat field. Start with clicking where you want the top left of your field to be, then click where you want the bottom right part to be. Follows the logic of dry wheat (non hydrated soil).
-- Up/Down Keys - Change Speed: This will change randomTickSpeed by multiples of 5 to increase the speed of the game. 
+- Up/Down Keys - Change Speed: This will change randomTickSpeed by multiples of 5 to increase the speed of the game.
+- Q - Closes the game.
 
-![Screenshot 2025-03-13 at 10 11 17 AM](https://github.com/user-attachments/assets/5e7e773d-d540-47c9-998f-cdf4bd72c141)
-(Image of a growing wheat field surrounded by grass)
+![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/2f721fcb-8893-44ba-88fd-0fde8e46b554)
+(Here is a small gif of me placing a wheat field, placing a few blocks of grass, then speeding up time to make the field grow and the grass spread.)
 
 ## Running the App
 
