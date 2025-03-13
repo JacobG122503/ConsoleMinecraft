@@ -192,13 +192,13 @@ int main() {
                 waitingForInput = false;
             }
             else if (command == KEY_UP) {
-                randomTickSpeed *= 10;
+                randomTickSpeed *= 5;
                 Log("Speed increased to %d", randomTickSpeed);
                 mvprintw(rows + 4, 0, "Speed set to level %d", ++speed);
             }
             else if (command == KEY_DOWN) {
                 if (randomTickSpeed != 3) {
-                    randomTickSpeed /= 10;
+                    randomTickSpeed /= 5;
                     mvprintw(rows + 4, 0, "Speed set to level %d", --speed);
                     Log("Speed decreased to %d", randomTickSpeed);
                 }
