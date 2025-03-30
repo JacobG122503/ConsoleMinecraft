@@ -41,6 +41,7 @@ This is just a small personal list for me to keep track of what I want to add an
 - Add water
 - Add color war fun mode
 - Add Farmer NPC
+- Add major minor build auto plugin and display version bottom right
 - (Done 02/25/25) Add Grass and Mycelium 
 - (Done 03/04/25) Add a logging system, log everything and put in textfile
 - (Done 03/04/25) Get main interface completed
